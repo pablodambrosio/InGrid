@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+
+var ipc = require('node-ipc'),
+    fs = require('fs');
+
+ipc.config.id = 'ingrid-server-hj76h';
+ipc.config.retry = 1500;
+ipc.config.silent = true;
+
+ipc.serve(
+    function () {
+
+        fs.chmodSync("/tmp/app." + ipc.config.id, "777");
+
+        ipc.server.on(
+            'message',
+            function (data, socket) {
+                diggest (data, socket);
+            }
+        );
+    }
+);
+
+ipc.server.start();
+
+
+function diggest(data, socket){
+    switch(data.action){
+        case "check":
+            check(data, socket);
+            break;
+        default:
+            ipc.server.emit(
+                socket,
+                'message', {
+                    action:"ack"
+                }
+            );
+    }
+}
+
+
+function check(data, socket){
+    console.log("d",data.action);
+    ipc.server.emit(
+        socket,
+        'message', {
+            action:"ack"
+        }
+    );
+}

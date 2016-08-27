@@ -1,0 +1,44 @@
+{
+  "name": "ingrid",
+  "version": "0.0.1",
+  "description": "A simple and fast application deployer written in node.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pablodambrosio/ingrid.git"
+  },
+  "keywords": [
+    "cli",
+    "command",
+    "deployment"
+  ],
+  "scripts": {
+    "status": "node bin/ingrid check install"
+  },
+  "contributors": [
+    {
+      "name": "Pablo D'Ambrosio",
+      "email": "pablo@vink.to"
+    }
+  ],
+  "dependencies": {
+    "colors": "^1.1.2",
+    "minimist": "^1.2.0",
+    "nginx-conf": "^1.2.0",
+    "node-ipc": "^8.1.1"
+  },
+  "devDependencies": {},
+  "bugs": {
+    "url": "https://github.com/pablodambrosio/ingrid/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/pablodambrosio/ingrid/issues/raw/master/LICENSE"
+    }
+  ],
+  "preferGlobal": "true",
+  "bin": {
+    "controller": "./bin/ingrid",
+    "server": "./bin/ingridd"
+  }
+}
