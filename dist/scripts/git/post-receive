@@ -1,0 +1,161 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const os = require('os');
+const execFile = require('child_process').execFile;
+const spawn = require('child_process').spawn;
+
+readStdin((stdin) => {
+
+    if (stdin[stdin.length - 1] == "\n") {
+        stdin = stdin.slice(0, stdin.length - 1);
+    }
+    var params = stdin.split(" ");
+
+    var commitInfo = {
+        from: params[0],
+        to: params[1],
+        branch: params[2]
+    };
+
+    checkBranch(commitInfo);
+
+});
+
+
+function checkBranch(commitInfo) {
+    if (!commitInfo.branch.match("\/master$")) {
+        console.log("Branch is not MASTER. This commit will not be deployed.");
+        endNotDeployed();
+    } else {
+        console.log("Master Branch received. Code Hash ", commitInfo.to);
+        checkOutFiles(commitInfo);
+    }
+}
+
+function checkOutFiles(commitInfo) {
+    var workingDir = os.tmpdir() + "/" + puh();
+    console.log(workingDir);
+
+    fs.mkdirSync(workingDir);
+
+    execFile('git', ['checkout', '-f', 'master'], {
+        env: {
+            "GIT_WORK_TREE": workingDir
+        }
+    }, (error, stdout, stderr) => {
+
+        if (error) {
+            console.log("Could not checkout.");
+            endNotDeployed();
+        } else {
+
+            verifyProcfile(workingDir, commitInfo);
+        }
+
+    });
+}
+
+function verifyProcfile(workingDir, commitInfo) {
+    execFile('foreman', ["check"], {
+        cwd: workingDir
+    }, (error, stdout, stderr) => {
+        if (error) {
+            console.log("Procfile check fail.", error);
+            endNotDeployed();
+        } else {
+            startProcess(workingDir, commitInfo);
+        }
+    });
+}
+
+function startProcess(workingDir, commitInfo) {
+
+    pid = parseInt(fs.readFileSync("./ingrid/process.pid"));
+
+    console.log("Restarting app");
+
+
+    killSignal();
+
+    function killSignal() {
+        try {
+            console.log("..");
+            process.kill(pid);
+            setTimeout(()=>{
+                killSignal();
+            },1000);
+        } catch (e) {
+            console.log("Old process killed");
+            setTimeout(next,5000);
+        }
+    }
+
+    function next(){
+        console.log("Starting new process");
+
+        var child = spawn("foreman", ["start"],
+            {
+                cwd: workingDir,
+                detached: true,
+                env: {
+                    "PORT": 5000
+                }
+            });
+
+        fs.writeFileSync("./ingrid/process.pid", child.pid);
+        endAppDeployed();
+    }
+
+
+}
+
+function endAppDeployed() {
+    console.log("\n\n", "Application deployed.");
+    process.exit(0);
+}
+
+function endNotDeployed() {
+    console.log("\n\n", "YOUR APP WILL NOT BE DEPLOYED.");
+    process.exit(1);
+}
+
+/*** ***/
+
+function readStdin(callback) {
+
+    var stdin = "";
+
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('readable', () => {
+        var chunk = process.stdin.read();
+        if (chunk !== null) {
+            stdin += chunk;
+        }
+    });
+
+    process.stdin.on('end', () => {
+        if (callback) {
+            callback(stdin);
+        }
+    });
+}
+
+function puh() {
+    return Math.round(Date.now() / 1000).toString(32) + "-" + (Math.random() * Math.pow(10, 18)).toString(32);
+}
+
+function clearTemporaryFiles(workingDir, callback) {
+    execFile('rm', ['-rf', workingDir], (error, stdout, stderr) => {
+
+        if (error) {
+            console.log("Temp files not deleted");
+        } else {
+            console.log("Temp files deleted");
+        }
+
+        if (callback)
+            callback();
+
+    });
+}
