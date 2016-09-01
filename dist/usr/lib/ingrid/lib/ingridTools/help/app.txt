@@ -1,0 +1,35 @@
+usage: ingrid app [<command>] ...
+
+    -a <app_name> specify app name
+
+List of commands:
+
+    create <app_name>
+        Create a new app
+
+    delete <app_name>
+        Delete an app
+
+    restart <app_name>
+        Restart workers
+
+    list
+        List apps
+
+    status [<app_name>]
+        Show app status
+
+    worker <start|stop> [-w <worker_name>] -a <app_name>
+        start       Start all workers or specified by -w option
+        stop        Stop all workers or specified by -w option
+        -w          Specify the worker name
+
+    domains <add|remove> <domain> -a <app_name>
+        add         Add hostname to an app route list
+        remove      Revome a hostname from an app route list
+
+    env <add|remove> -e <variable_name> -s <value>
+        add         Add a variable to the app environment
+        remove      Remove a variable to the app environment
+        -e          Specify the environment variable
+        -s          Specify the environment variable content

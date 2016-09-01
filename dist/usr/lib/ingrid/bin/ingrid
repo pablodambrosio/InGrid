@@ -11,3 +11,29 @@ if (argv._[0] == 'install'){
 if (argv._[0] == 'status'){
     ingridTools.getStatus();
 }
+
+if (argv._[0] == 'checkconfig'){
+    try{
+        ingridTools.checkConfigFile();
+        console.log("Config file ok");
+    }catch(e){
+        if (e.lineNumber)
+            console.log("Server config file error on line " + e.lineNumber);
+        else {
+            console.log("Unkown error");
+            if (argv.v){
+                console.log(e);
+            }
+        }
+        process.exit(1);
+    }
+}
+
+
+if (argv._[0] == 'app'){
+    if (ingridTools.app.checkArgs(argv)){
+        ingridTools.app.exec(argv)
+    }else{
+        ingridTools.app.showHelp();
+    }
+}

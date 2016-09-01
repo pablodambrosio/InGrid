@@ -1,0 +1,11 @@
+#Git repository
+git_bare_repo=/opt/git;
+
+#Apps configs
+apps_config_data=/opt/ingrid;
+
+#Apps Workers files
+apps_containers_path=/var/ingrid;
+
+#nginx configs
+nginx_config=/etc/nginx/conf.d/;
