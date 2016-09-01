@@ -55,8 +55,7 @@ function execCreate(argv) {
                 fs.mkdirSync(gitBareDir);
                 fs.chownSync(gitBareDir,config.git_user_id,config.git_group_id);
                 execFile("git", ["init", "--bare", "--shared"],{
-                    cwd: gitBareDir,
-                    uid: config.git_user_id
+                    cwd: gitBareDir
                 },(error, stdout, stderr)=>{
                     if (error != null){
                         console.log("Unknown error.");
