@@ -1,5 +1,5 @@
 const fs = require("fs");
-const execFile = require('child_process').exec;
+const execFile = require('child_process').execFile;
 
 const Config = require("./config.js");
 
