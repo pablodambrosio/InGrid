@@ -77,6 +77,10 @@ function execCreate(argv) {
                 else
                     console.log("Unknown error. Check if bare repositories dir exists.");
 
+                if (argv.v){
+                    console.log(e);
+                }
+
                 process.exit(1);
             }
 
