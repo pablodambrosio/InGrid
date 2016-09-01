@@ -1,5 +1,5 @@
 const fs = require("fs");
-const execFile = require('child_process').execFile;
+const execFile = require('child_process').exec;
 
 const Config = require("./config.js");
 
@@ -51,9 +51,12 @@ function execCreate(argv) {
             console.log("Creating repository...");
 
             try{
-                fs.mkdirSync(config.gitBareRepo + "/" + appName);
+                var gitBareDir = config.gitBareRepo + "/" + appName + ".git";
+                fs.mkdirSync(gitBareDir);
+                fs.chownSync(gitBareDir,"git","git");
                 execFile("git", ["init", "--bare", "--shared"],{
-                    cwd: config.gitBareRepo + "/" + appName
+                    cwd: gitBareDir,
+                    uid: "git"
                 },(error, stdout, stderr)=>{
                     if (error != null){
                         console.log("Unknown error.");
