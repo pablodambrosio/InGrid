@@ -66,6 +66,8 @@ function execCreate(argv) {
                         process.exit(1);
                     }
 
+                    console.log(stdout,stderr);
+
                     fs.linkSync(__dirname + "/../../../scripts/git/post-receive", config.gitBareRepo + "/" + appName + "/hooks/post-receive");
 
                     // Next
