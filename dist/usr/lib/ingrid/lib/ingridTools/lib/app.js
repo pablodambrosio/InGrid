@@ -51,12 +51,17 @@ function execCreate(argv) {
             console.log("Creating repository...");
 
             try{
+                console.log("1");
                 var gitBareDir = config.gitBareRepo + "/" + appName + ".git";
+                console.log("2");
                 fs.mkdirSync(gitBareDir);
+                console.log("3");
                 fs.chownSync(gitBareDir,config.git_user_id,config.git_group_id);
+                console.log("4");
                 execFile("git", ["init", "--bare", "--shared"],{
                     cwd: gitBareDir
                 },(error, stdout, stderr)=>{
+                    console.log("5");
                     if (error != null){
                         console.log("Unknown error.");
                         if (argv.v){
@@ -65,6 +70,8 @@ function execCreate(argv) {
                         process.exit(1);
                     }
 
+                    console.log("6");
+
                     console.log(stdout,stderr);
 
                     fs.linkSync(__dirname + "/../../../scripts/git/post-receive", config.gitBareRepo + "/" + appName + "/hooks/post-receive");
@@ -72,6 +79,7 @@ function execCreate(argv) {
                     // Next
 
                 });
+                console.log("7");
             }catch(e){
                 if (e.code=="EEXIST")
                     console.log("App exists, use different app name");
