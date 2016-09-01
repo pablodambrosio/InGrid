@@ -1,7 +1,7 @@
 const fs = require("fs");
 
-const SERVER_CONFIG_FILE = "/Users/pablo/Documents/independientes/ingrid/dist/etc/ingrid/server";
-const TOOLKIT_CONFIG_FILE = "/Users/pablo/Documents/independientes/ingrid/dist/etc/ingrid/toolkit";
+const SERVER_CONFIG_FILE = process.env.INGRID_SERVER_CONFIG_FILE?process.env.INGRID_SERVER_CONFIG_FILE:"/etc/ingrid/server";
+const TOOLKIT_CONFIG_FILE =process.env.INGRID_TOOLKIT_CONFIG_FILE?process.env.INGRID_TOOLKIT_CONFIG_FILE:"/etc/ingrid/toolkit";
 
 exports.getConfig = getConfig;
 exports.checkConfigFile = checkConfigFile;
