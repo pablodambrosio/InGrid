@@ -60,9 +60,9 @@ function checkConfigFile(returnConfig) {
             }else if(name == "nginx_config"){
                 config.nginx_config = data;
             }else if(name =="git_user_id"){
-                config.git_user_id = data;
+                config.git_user_id = parseInt(data);
             }else if(name =="git_group_id"){
-                config.git_group_id = data;
+                config.git_group_id = parseInt(data);
             }
         }
     }
