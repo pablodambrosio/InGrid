@@ -59,6 +59,10 @@ function checkConfigFile(returnConfig) {
                 config.appsContainersPath = data;
             }else if(name == "nginx_config"){
                 config.nginx_config = data;
+            }else if(name =="git_user_id"){
+                config.git_user_id = data;
+            }else if(name =="git_group_id"){
+                config.git_group_id = data;
             }
         }
     }

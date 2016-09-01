@@ -9,3 +9,7 @@ apps_containers_path=/var/ingrid;
 
 #nginx configs
 nginx_config=/etc/nginx/conf.d/;
+
+#Git User ID
+git_user_id=1001;
+git_group_id=1001;
