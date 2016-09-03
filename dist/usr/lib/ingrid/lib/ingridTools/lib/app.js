@@ -57,7 +57,7 @@ function execCreate(argv) {
                 execFile("git", ["init", "--bare", "--shared"],{
                     cwd: gitBareDir,
                     uid: config.git_user_id,
-                    gui: config.git_group_id
+                    gid: config.git_group_id
                 },(error, stdout, stderr)=>{
                     if (error != null){
                         console.log("Unknown error.");
