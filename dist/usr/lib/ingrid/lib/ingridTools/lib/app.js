@@ -64,6 +64,10 @@ function execCreate(argv) {
                         if (argv.v){
                             console.log(stderr);
                         }
+
+                        fs.mkdirSync(gitBareDir + "/ingrid");
+                        fs.chownSync(gitBareDir + "/ingrid",config.git_user_id,config.git_group_id);
+
                         process.exit(1);
                     }
 
